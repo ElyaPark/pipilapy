@@ -5,6 +5,10 @@ body {
     padding: 20px;
 }
 
+li{
+    width: 200px;
+}
+
 .header {
     background-color: #040506;
     color: white;
