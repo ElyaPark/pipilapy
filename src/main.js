@@ -1,5 +1,5 @@
 import HeaderComponent from './view/header-component.js';
-import FormComponent from './view/form-component.js';
+import FormComponent from './view/from-component.js';
 import BlogackComponent from './view/blogack-companent.js';
 import ReadyComponent from './view/ready-component.js';
 import InPrograssComponent from './view/in_progress-component.js';
