@@ -1,40 +1,58 @@
-import {createElement} from '../framework/render.js';
+import { AbstractComponent } from "../framework/view/abstract-component.js";
 
-
-function createHeaderComponentTemplate() {
-    return (
-      
-      `
-              <div class="column">
-                <h2>Корзина</h2>
-                <ul id="trash" class="task-list">
-                    <li>Сходить погулять</li>
-                    <li>Прочитать Войну и Мир</li>
-                </ul>
-            </div>
-    `
-
-      );
+function createGarbageTemplate() {
+  return `
+    <div class="column" data-status="basket">
+      <h2>Корзина</h2>
+      <ul class="task-list"></ul>
+      <button class="reset-button" disabled>Очистить</button>
+    </div>
+  `;
 }
 
-
-export default class HeaderComponent {
-  getTemplate() {
-    return createHeaderComponentTemplate();
+export default class GarbageComponent extends AbstractComponent {
+  get template() {
+    return createGarbageTemplate();
   }
 
+  get element() {
+    if (!this.elementInstance) {
+      this.elementInstance = super.element;
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+      this.elementInstance.addEventListener("dragover", (event) => {
+        event.preventDefault(); // Разрешаем сброс
+      });
+
+      this.elementInstance.addEventListener("drop", (event) => {
+        const taskId = event.dataTransfer.getData("text/plain");
+        const status = "basket";
+        if (this.onDrop) {
+          this.onDrop(taskId, status); // Вызываем обработчик drop
+        }
+      });
+
+      const resetButton = this.elementInstance.querySelector(".reset-button");
+      resetButton.addEventListener("click", () => {
+        if (this.onClear) {
+          this.onClear(); // Вызываем обработчик очистки
+        }
+      });
     }
-
-
-    return this.element;
+    return this.elementInstance;
   }
 
+  setOnDropHandler(handler) {
+    this.onDrop = handler;
+  }
 
-  removeElement() {
-    this.element = null;
+  setOnClearHandler(handler) {
+    this.onClear = handler;
+  }
+
+  toggleClearButtonState(hasTasks) {
+    const resetButton = this.element.querySelector(".reset-button");
+    if (resetButton) {
+      resetButton.disabled = !hasTasks; // Включаем или отключаем кнопку
+    }
   }
 }
