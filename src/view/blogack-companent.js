@@ -1,43 +1,39 @@
-import {createElement} from '../framework/render.js';
+import { AbstractComponent } from "../framework/view/abstract-component.js";
 
-
-function createHeaderComponentTemplate() {
-    return (
-      
-      `
-
-       <div class="column">
-                <h2>Бэклог</h2>
-                <ul id="backlog" class="task-list">
-                    <li>Выучить JS</li>
-                    <li>Выучить React</li>
-                    <li>Сделать домашку</li>
-                </ul>
-            </div>
-
-    `
-
-      );
+function createBlogackTemplate() {
+  return `
+    <div class="column" data-status="backlog">
+      <h2>Бэклог</h2>
+      <ul class="task-list"></ul>
+    </div>
+  `;
 }
 
-
-export default class HeaderComponent {
-  getTemplate() {
-    return createHeaderComponentTemplate();
+export default class BlogackComponent extends AbstractComponent {
+  get template() {
+    return createBlogackTemplate();
   }
 
+  get element() {
+    if (!this.elementInstance) {
+      this.elementInstance = super.element;
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+      this.elementInstance.addEventListener("dragover", (event) => {
+        event.preventDefault(); // Разрешаем сброс
+      });
+
+      this.elementInstance.addEventListener("drop", (event) => {
+        const taskId = event.dataTransfer.getData("text/plain");
+        const status = "backlog";
+        if (this.onDrop) {
+          this.onDrop(taskId, status); // Вызываем обработчик drop
+        }
+      });
     }
-
-
-    return this.element;
+    return this.elementInstance;
   }
 
-
-  removeElement() {
-    this.element = null;
+  setOnDropHandler(handler) {
+    this.onDrop = handler;
   }
 }
