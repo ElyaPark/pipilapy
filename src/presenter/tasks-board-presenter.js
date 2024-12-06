@@ -1,30 +1,65 @@
-import TasksListComponent from '../view/tasks-list-component.js';
-import TaskComponent from '../view/task-component.js';
-import TaskBoardComponent from '../view/tasks-board-component.js';
-import {render} from '../framework/render.js';
-
+import { render } from "../framework/render.js";
+import BlogackComponent from "../view/blogack-companent.js";
+import GarbageComponent from "../view/garbage-component.js";
+import InProgressComponent from "../view/in_progress-component.js";
+import ReadyComponent from "../view/ready-component.js";
+import ResetButtonComponent from "../view/reset-button-component.js";
+import NoTasksComponent from "../view/no-tasks-component.js";
 
 export default class TasksBoardPresenter {
- tasksBoardComponent = new TaskBoardComponent()
- taskListComponent = new TasksListComponent();
+  #boardContainer = null;
+  #tasksModel = null;
 
+  constructor({ boardContainer, tasksModel }) {
+    this.#boardContainer = boardContainer;
+    this.#tasksModel = tasksModel;
 
- constructor({boardContainer}) {
-   this.boardContainer = boardContainer;
- }
+    this.#tasksModel.addObserver(this.#handleModelChange.bind(this));
+  }
 
+  init() {
+    const tasks = this.#tasksModel.tasks;
 
- init() {
-   render(this.tasksBoardComponent, this.boardContainer);
-   for (let i = 0; i < 4; i++) {
-       const tasksListComponent = new TasksListComponent();
-       render(tasksListComponent, this.tasksBoardComponent.getElement());
-      
-       for (let j = 0; j < 4; j++) {
-           const taskComponent = new TaskComponent();
-           render(taskComponent, tasksListComponent.getElement());
-       }
-   }
- 
- }
+    if (tasks.length === 0) {
+      this.#renderNoTasks();
+      return;
+    }
+
+    this.#renderBlogackColumn();
+    this.#renderInProgressColumn();
+    this.#renderReadyColumn();
+    this.#renderGarbageColumn();
+  }
+
+  #renderBlogackColumn() {
+    const blogackComponent = new BlogackComponent();
+    render(blogackComponent, this.#boardContainer);
+  }
+
+  #renderInProgressColumn() {
+    const inProgressComponent = new InProgressComponent();
+    render(inProgressComponent, this.#boardContainer);
+  }
+
+  #renderReadyColumn() {
+    const readyComponent = new ReadyComponent();
+    render(readyComponent, this.#boardContainer);
+  }
+
+  #renderGarbageColumn() {
+    const garbageComponent = new GarbageComponent();
+    render(garbageComponent, this.#boardContainer);
+    const resetButtonComponent = new ResetButtonComponent();
+    render(resetButtonComponent, garbageComponent.element);
+  }
+
+  #renderNoTasks() {
+    const noTasksComponent = new NoTasksComponent();
+    render(noTasksComponent, this.#boardContainer);
+  }
+
+  #handleModelChange() {
+    this.#boardContainer.innerHTML = "";
+    this.init();
+  }
 }
