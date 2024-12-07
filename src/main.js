@@ -12,13 +12,13 @@ const tasksApiService = new TasksApiService(API_ENDPOINT);
 const tasksModel = new TasksModel({ tasksApiService });
 const appContainer = document.querySelector("#app");
 
-// Рендер заголовка
+
 function renderHeader() {
   const header = new HeaderComponent();
   render(header, appContainer);
 }
 
-// Рендер формы для добавления задачи
+
 function renderForm() {
   const formContainer = document.createElement("div");
   formContainer.className = "task-input";
@@ -31,17 +31,17 @@ function renderForm() {
   const inputField = formContainer.querySelector("#new-task");
   const addButton = formContainer.querySelector("#add-task");
 
-  // Обработчик кнопки "Добавить"
+
   addButton.addEventListener("click", async () => {
     const taskTitle = inputField.value.trim();
     if (taskTitle) {
       await tasksModel.addTask({ title: taskTitle, status: "backlog" });
-      inputField.value = ""; // Очищаем поле ввода
-      renderColumns(); // Перерисовываем колонки задач
+      inputField.value = ""; 
+      renderColumns(); 
     }
   });
 
-  // Добавляем форму вручную
+
   const existingFormContainer = document.querySelector(".task-input");
   if (existingFormContainer) {
     existingFormContainer.replaceWith(formContainer);
@@ -50,31 +50,31 @@ function renderForm() {
   }
 }
 
-// Устанавливаем обработчики drop и очистки для всех колонок
+
 function setHandlers(component, status) {
-  // Обработчик drop
+  
   component.setOnDropHandler(async (taskId) => {
     const task = tasksModel.tasks.find((item) => item.id === taskId);
     if (task) {
       task.status = status;
-      await tasksModel.updateTask(task); // Обновляем статус задачи на сервере
-      renderColumns(); // Перерисовываем колонки
+      await tasksModel.updateTask(task); 
+      renderColumns(); 
     }
   });
 
-  // Обработчик очистки для "Корзины"
+  
   if (status === "basket") {
     component.setOnClearHandler(async () => {
       const basketTasks = tasksModel.tasks.filter((task) => task.status === "basket");
       for (const task of basketTasks) {
-        await tasksModel.deleteTask(task.id); // Удаляем задачи из "Корзины"
+        await tasksModel.deleteTask(task.id); 
       }
-      renderColumns(); // Перерисовываем колонки
+      renderColumns(); 
     });
   }
 }
 
-// Рендер колонок задач
+
 function renderColumns() {
   const columnsContainer = document.createElement("div");
   columnsContainer.className = "columns";
@@ -95,27 +95,27 @@ function renderColumns() {
     const tasks = tasksModel.getTasksByStatus(status);
     const list = component.element.querySelector(".task-list");
 
-    // Отображаем задачи или сообщение о пустом списке
+   
     list.innerHTML = tasks.length
       ? tasks.map((task) => `<li draggable="true" data-id="${task.id}">${task.title}</li>`).join("")
       : `<p>Нет задач для отображения</p>`;
 
-    // Добавляем обработчик dragstart для задач
+    
     list.querySelectorAll("li").forEach((taskElement) => {
       taskElement.addEventListener("dragstart", (event) => {
-        event.dataTransfer.setData("text/plain", taskElement.dataset.id); // Передаём ID задачи
+        event.dataTransfer.setData("text/plain", taskElement.dataset.id); 
       });
     });
 
-    // Добавляем колонку в контейнер
+    
     columnsContainer.appendChild(component.element);
 
-    // Управляем состоянием кнопки "Очистить" для "Корзины"
+  
     if (status === "basket") {
       component.toggleClearButtonState(tasks.length > 0);
     }
 
-    // Устанавливаем обработчики
+    
     setHandlers(component, status);
   });
 
@@ -127,12 +127,12 @@ function renderColumns() {
   }
 }
 
-// Инициализация приложения
+
 async function initApp() {
-  renderHeader(); // Рендерим заголовок
-  renderForm();   // Рендерим форму
-  await tasksModel.init(); // Загружаем задачи с сервера
-  renderColumns(); // Рендерим колонки задач
+  renderHeader();
+  renderForm();   
+  await tasksModel.init(); 
+  renderColumns(); 
 }
 
 initApp();
