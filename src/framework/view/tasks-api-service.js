@@ -1,4 +1,4 @@
-import ApiService from './api-service.js'; // Убедитесь, что путь корректен
+import ApiService from './api-service.js';
 
 const Method = {
   GET: 'GET',
