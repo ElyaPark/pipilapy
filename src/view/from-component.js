@@ -39,7 +39,7 @@ export default class FormComponent extends AbstractComponent {
   get template() {
     return createFormTemplate();
   }
-ф
+
   clearInput() {
     const inputField = this.element.querySelector("#new-task");
     if (inputField) {
