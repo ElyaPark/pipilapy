@@ -19,14 +19,14 @@ export default class InProgressComponent extends AbstractComponent {
       this.elementInstance = super.element;
 
       this.elementInstance.addEventListener("dragover", (event) => {
-        event.preventDefault(); // Разрешаем сброс
+        event.preventDefault(); 
       });
 
       this.elementInstance.addEventListener("drop", (event) => {
         const taskId = event.dataTransfer.getData("text/plain");
         const status = "processing";
         if (this.onDrop) {
-          this.onDrop(taskId, status); // Вызываем обработчик drop
+          this.onDrop(taskId, status); 
         }
       });
     }
