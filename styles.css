@@ -115,7 +115,7 @@ label {
     font-size: 16px;
     font-weight: bold;
     color: white;
-    background-color: #942222; /* Красный цвет */
+    background-color: #942222; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -123,15 +123,15 @@ label {
   }
   
   .reset-button:hover {
-    background-color: #942222; /* Более тёмный красный при наведении */
+    background-color: #942222; 
   }
   
   .reset-button:active {
-    background-color: #cc0000; /* Ещё темнее при нажатии */
+    background-color: #cc0000; 
   }
   
   .reset-button:disabled {
-    background-color: #f2f2f2; /* Серый цвет для отключённой кнопки */
+    background-color: #f2f2f2; 
     color: #aaa;
     cursor: not-allowed;
   }
