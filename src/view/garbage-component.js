@@ -20,21 +20,21 @@ export default class GarbageComponent extends AbstractComponent {
       this.elementInstance = super.element;
 
       this.elementInstance.addEventListener("dragover", (event) => {
-        event.preventDefault(); // Разрешаем сброс
+        event.preventDefault(); 
       });
 
       this.elementInstance.addEventListener("drop", (event) => {
         const taskId = event.dataTransfer.getData("text/plain");
         const status = "basket";
         if (this.onDrop) {
-          this.onDrop(taskId, status); // Вызываем обработчик drop
+          this.onDrop(taskId, status); 
         }
       });
 
       const resetButton = this.elementInstance.querySelector(".reset-button");
       resetButton.addEventListener("click", () => {
         if (this.onClear) {
-          this.onClear(); // Вызываем обработчик очистки
+          this.onClear(); 
         }
       });
     }
@@ -52,7 +52,7 @@ export default class GarbageComponent extends AbstractComponent {
   toggleClearButtonState(hasTasks) {
     const resetButton = this.element.querySelector(".reset-button");
     if (resetButton) {
-      resetButton.disabled = !hasTasks; // Включаем или отключаем кнопку
+      resetButton.disabled = !hasTasks; 
     }
   }
 }
