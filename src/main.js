@@ -1,4 +1,4 @@
-import BlogackComponent from './view/blogack-companent.js';
+import BlogackComponent from 'src/view/blogack-companent.js';
 import InProgressComponent from "./view/in_progress-component.js";
 import ReadyComponent from "./view/ready-component.js";
 import GarbageComponent from "./view/garbage-component.js";
