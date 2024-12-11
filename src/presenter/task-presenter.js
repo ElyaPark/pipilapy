@@ -1,5 +1,5 @@
 import { render } from "../framework/render.js";
-import TaskComponent from "./view/blogack-companent.js";
+import TaskComponent from "../view/task-component.js";
 
 export default class TaskPresenter {
   #task = null;
