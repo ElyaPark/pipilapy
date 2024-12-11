@@ -24,12 +24,12 @@ export default class FormComponent extends AbstractComponent {
       const addButton = this.elementInstance.querySelector("#add-task");
 
       addButton.addEventListener("click", (event) => {
-        event.preventDefault(); 
+        event.preventDefault(); // Предотвращаем перезагрузку страницы
         const taskTitle = inputField.value.trim();
 
         if (taskTitle && this.onAddTask) {
-          this.onAddTask(taskTitle); 
-          this.clearInput(); 
+          this.onAddTask(taskTitle); // Вызываем переданный обработчик
+          this.clearInput(); // Очищаем поле после добавления задачи
         }
       });
     }
